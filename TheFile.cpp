@@ -59,14 +59,26 @@ Player* formatInp(string inp) {
     return obj;
 }
 
-void combine(vector<Team*> &teams, vector<Player*> &tmp, int n, int left, int k){
+void combine(vector<Team*> &teams, vector<Player*> &tmp, vector<Player*> inp, int n, int left, int k){
+    if(k==0) {
+        Team *team = new Team;
+        team->players = tmp;
+        teams.push_back(team);
+        return;
+    }
+
+    for(int i=left;i<=n;i++) {
+        tmp.push_back(inp[i]);
+        combine(teams, tmp, inp, n, i+1, k-1);
+        tmp.pop_back();
+    }
 
 }
 
-vector<Team*> makeCombinations(int n, int k){
+vector<Team*> makeCombinations(vector<Player*> inp, int n, int k){
     vector<Team*> teams;
     vector<Player*> tmp;
-    combine(teams, tmp, n, 1, k);
+    combine(teams, tmp, inp, n, 1, k);
     return teams;
 }
 
@@ -91,7 +103,11 @@ int main()
             cout<<"Wrong input format, please enter again..."<<"\n";
         }
     }
-    for(int i=0;i<inp.size();i++){
-        cout<<inp[i]->name<<endl;
+    vector<Team*> teams = makeCombinations(inp, inp.size(), 2);
+    for(int i=0;i<teams.size();i++) {
+        cout<<"team"<<endl;
+        for(int j=0;j<teams[i]->players.size();j++){
+            cout<<teams[i]->players[j]->name<<endl;
+        }
     }
 }
