@@ -14,7 +14,8 @@ class Team{
     public:
         vector<Player*> players;
         map<string, bool> present;
-        int average;
+        float average;
+        string names;
 
         bool isPresent(vector<Player*> otherPlayers) {
             for(int i = 0;i<otherPlayers.size();i++){
@@ -32,22 +33,32 @@ class Team{
         }
 
         void calcAverage(){
-            this->average = 0;
+            this->average = 0.0;
             for(int i=0;i<this->players.size();i++){
                 this->average+=this->players[i]->score;
             }
-            this->average = (int)round(this->average/this->players.size());
+            this->average = (float)this->average/(float)this->players.size();
+        }
+
+        void concatNames() {
+            this->names = "";
+            for(int i=0;i<this->players.size();i++){
+                this->names = this->names + this->players[i]->name;
+                if(i<this->players.size()-1){
+                    this->names = this->names + ",";
+                }
+            }
         }
 };
 
 class Game {
     public:
-        Team teamA;
-        Team teamB;
-        int quality;
+        Team *teamA;
+        Team *teamB;
+        float quality;
 
         void calcQuality(){
-            this->quality = (int)round(abs(this->teamA.average - this->teamB.average));
+            this->quality = round(abs((float)this->teamA->average - (float)this->teamB->average));
         }
 
 };
@@ -82,6 +93,33 @@ vector<Team*> makeCombinations(vector<Player*> inp, int n, int k){
     return teams;
 }
 
+vector<Game*> makeGames(vector<Team*> &teams){
+    vector<Game*> games;
+    for(int k=0;k<teams.size();k++){
+        teams[k]->makeMap();
+        teams[k]->calcAverage();
+        teams[k]->concatNames();
+    }
+    for(int i=0;i<teams.size();i++){
+        for(int j=i+1;j<teams.size();j++){
+            if(i!=j){
+                if(!teams[i]->isPresent(teams[j]->players)){
+                    Game *game = new Game;
+                    game->teamA = teams[i];
+                    game->teamB = teams[j];
+                    game->calcQuality();
+                    games.push_back(game);
+                }
+            }
+        }
+    }
+    return games;
+}
+
+bool compareQuality(Game *g1, Game *g2) {
+    return (g1->quality)<(g2->quality);
+}
+
 
 
 
@@ -103,11 +141,13 @@ int main()
             cout<<"Wrong input format, please enter again..."<<"\n";
         }
     }
+
     vector<Team*> teams = makeCombinations(inp, inp.size(), 2);
-    for(int i=0;i<teams.size();i++) {
-        cout<<"team"<<endl;
-        for(int j=0;j<teams[i]->players.size();j++){
-            cout<<teams[i]->players[j]->name<<endl;
-        }
+    vector<Game*> games = makeGames(teams);
+    sort(games.begin(), games.end(), compareQuality);
+    cout<<"Result:"<<endl;
+    for(int i=0;i<games.size();i++){
+        cout<<games[i]->teamA->names<<"("<<games[i]->teamA->average<<")"<<" vs "
+            <<games[i]->teamB->names<<"("<<games[i]->teamB->average<<")"<<endl;
     }
 }
