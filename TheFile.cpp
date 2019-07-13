@@ -128,6 +128,7 @@ int main()
 {
     vector<Player*> inp;
     string tempInp;
+    int k = 1;
     cout<<"Enter input followed by enter"<<"\n";
     while(true){
         getline(cin, tempInp);
@@ -141,8 +142,17 @@ int main()
             cout<<"Wrong input format, please enter again..."<<"\n";
         }
     }
-
-    vector<Team*> teams = makeCombinations(inp, inp.size(), 2);
+    cout<<"Enter number of player per team"<<endl;
+    while(true){
+        cin>>k;
+        if(k>inp.size()/2){
+            cout<<"Please enter team size =< total players / 2"<<endl;
+        }
+        else {
+            break;
+        }
+    }
+    vector<Team*> teams = makeCombinations(inp, inp.size(), k);
     vector<Game*> games = makeGames(teams);
     sort(games.begin(), games.end(), compareQuality);
     cout<<"Result:"<<endl;
