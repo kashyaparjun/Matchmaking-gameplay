@@ -120,16 +120,11 @@ bool compareQuality(Game *g1, Game *g2) {
     return (g1->quality)<(g2->quality);
 }
 
-
-
-
-
-int main()
-{
+void manualInput(){
     vector<Player*> inp;
     string tempInp;
     int k = 1;
-    cout<<"Enter input followed by enter"<<"\n";
+    cout<<"Enter single input followed by enter [Format: <Name of player> <Score>]"<<"\n";
     while(true){
         getline(cin, tempInp);
         if(tempInp.length() == 0){
@@ -160,4 +155,9 @@ int main()
         cout<<games[i]->teamA->names<<"("<<games[i]->teamA->average<<")"<<" vs "
             <<games[i]->teamB->names<<"("<<games[i]->teamB->average<<")"<<endl;
     }
+}
+
+int main()
+{
+    manualInput();
 }
