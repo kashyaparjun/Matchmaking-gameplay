@@ -10,33 +10,44 @@ class Player {
         int score;
 };
 
+class Team{
+    public:
+        vector<Player*> players;
+        map<string, bool> present;
+        int average;
+
+        bool isPresent(vector<Player*> otherPlayers) {
+            for(int i = 0;i<otherPlayers.size();i++){
+                if(present.find(otherPlayers[i]->name)!=present.end()){
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        void makeMap(){
+            for(int i=0;i<this->players.size();i++){
+                present[this->players[i]->name] = this->players[i]->score;
+            }
+        }
+
+        void calcAverage(){
+            this->average = 0;
+            for(int i=0;i<this->players.size();i++){
+                this->average+=this->players[i]->score;
+            }
+            this->average = (int)round(this->average/this->players.size());
+        }
+};
+
 class Game {
     public:
-        vector<Player*> teamA;
-        vector<Player*> teamB;
-        int playersPerTeam;
-        int teamAScore;
-        int teamBScore;
+        Team teamA;
+        Team teamB;
         int quality;
 
-        void calcAverageTeamA(){
-            this->teamAScore = 0;
-            for(int i=0;i<this->teamA.size();i++){
-                this->teamAScore+=teamA[i]->score;
-            }
-            this->teamAScore = (int)round(this->teamAScore/this->teamA.size());
-        }
-
-        void calcAverageTeamB(){
-            this->teamBScore = 0;
-            for(int i=0;i<this->teamB.size();i++){
-                this->teamBScore+=teamB[i]->score;
-            }
-            this->teamBScore = (int)round(this->teamBScore/this->teamB.size());
-        }
-
         void calcQuality(){
-            this->quality = (int)round(abs(teamAScore - teamBScore));
+            this->quality = (int)round(abs(this->teamA.average - this->teamB.average));
         }
 
 };
