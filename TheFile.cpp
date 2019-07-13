@@ -9,12 +9,24 @@ class Player {
         int score;
 };
 
+class Game {
+    public:
+        vector<Player*> teamA;
+        vector<Player*> teamB;
+        int playersPerTeam;
+        int teamAScore;
+        int teamBScore;
+        int absDiff;
+};
+
 Player* formatInp(string inp) {
     Player *obj = new Player;
     obj->name = inp.substr(0, inp.find(" "));
     obj->score = stoi(inp.substr(inp.find(" "), inp.length()));
     return obj;
 }
+
+
 
 int main()
 {
