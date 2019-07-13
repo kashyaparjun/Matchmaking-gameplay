@@ -1,15 +1,18 @@
 #include <iostream>
 #include <bits/stdc++.h>
 #include <math.h>
+#include <assert.h>
 
 using namespace std;
 
+//Individual player model
 class Player {
     public:
         string name;
         int score;
 };
 
+//Team DataStructure
 class Team{
     public:
         vector<Player*> players;
@@ -51,6 +54,7 @@ class Team{
         }
 };
 
+//Game DataStructure
 class Game {
     public:
         Team *teamA;
@@ -63,13 +67,7 @@ class Game {
 
 };
 
-Player* formatInp(string inp) {
-    Player *obj = new Player;
-    obj->name = inp.substr(0, inp.find(" "));
-    obj->score = stoi(inp.substr(inp.find(" "), inp.length()));
-    return obj;
-}
-
+//section - DFS
 void combine(vector<Team*> &teams, vector<Player*> &tmp, vector<Player*> inp, int n, int left, int k){
     if(k==0) {
         Team *team = new Team;
@@ -93,6 +91,9 @@ vector<Team*> makeCombinations(vector<Player*> inp, int n, int k){
     return teams;
 }
 
+//END OF DFS
+
+// Fighting teams
 vector<Game*> makeGames(vector<Team*> &teams){
     vector<Game*> games;
     for(int k=0;k<teams.size();k++){
@@ -116,10 +117,20 @@ vector<Game*> makeGames(vector<Team*> &teams){
     return games;
 }
 
+//sorting function
 bool compareQuality(Game *g1, Game *g2) {
     return (g1->quality)<(g2->quality);
 }
 
+//console input formatting
+Player* formatInp(string inp) {
+    Player *obj = new Player;
+    obj->name = inp.substr(0, inp.find(" "));
+    obj->score = stoi(inp.substr(inp.find(" "), inp.length()));
+    return obj;
+}
+
+// For Console inputs
 void manualInput(){
     vector<Player*> inp;
     string tempInp;
@@ -156,6 +167,23 @@ void manualInput(){
             <<games[i]->teamB->names<<"("<<games[i]->teamB->average<<")"<<endl;
     }
 }
+
+
+/*
+###########################################
+##############Test Cases###################
+###########################################
+*/
+
+vector<Game*> testTemplate(vector<Player*> inp, int k){
+    assert(k=<inp.size());
+    vector<Team*> teams = makeCombinations(inp, inp.size(), k);
+    vector<Game*> games = makeGames(teams);
+    sort(games.begin(), games.end(), compareQuality);
+    return games;
+}
+
+
 
 int main()
 {
