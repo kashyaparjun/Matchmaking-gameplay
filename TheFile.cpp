@@ -1,5 +1,6 @@
 #include <iostream>
 #include <bits/stdc++.h>
+#include <math.h>
 
 using namespace std;
 
@@ -16,7 +17,28 @@ class Game {
         int playersPerTeam;
         int teamAScore;
         int teamBScore;
-        int absDiff;
+        int quality;
+
+        void calcAverageTeamA(){
+            this->teamAScore = 0;
+            for(int i=0;i<this->teamA.size();i++){
+                this->teamAScore+=teamA[i]->score;
+            }
+            this->teamAScore = (int)round(this->teamAScore/this->teamA.size());
+        }
+
+        void calcAverageTeamB(){
+            this->teamBScore = 0;
+            for(int i=0;i<this->teamB.size();i++){
+                this->teamBScore+=teamB[i]->score;
+            }
+            this->teamBScore = (int)round(this->teamBScore/this->teamB.size());
+        }
+
+        void calcQuality(){
+            this->quality = (int)round(abs(teamAScore - teamBScore));
+        }
+
 };
 
 Player* formatInp(string inp) {
@@ -25,6 +47,8 @@ Player* formatInp(string inp) {
     obj->score = stoi(inp.substr(inp.find(" "), inp.length()));
     return obj;
 }
+
+
 
 
 
