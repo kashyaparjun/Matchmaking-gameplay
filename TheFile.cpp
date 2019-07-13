@@ -67,7 +67,7 @@ void combine(vector<Team*> &teams, vector<Player*> &tmp, vector<Player*> inp, in
         return;
     }
 
-    for(int i=left;i<=n;i++) {
+    for(int i=left;i<n;i++) {
         tmp.push_back(inp[i]);
         combine(teams, tmp, inp, n, i+1, k-1);
         tmp.pop_back();
@@ -78,7 +78,7 @@ void combine(vector<Team*> &teams, vector<Player*> &tmp, vector<Player*> inp, in
 vector<Team*> makeCombinations(vector<Player*> inp, int n, int k){
     vector<Team*> teams;
     vector<Player*> tmp;
-    combine(teams, tmp, inp, n, 1, k);
+    combine(teams, tmp, inp, n, 0, k);
     return teams;
 }
 
