@@ -59,6 +59,17 @@ Player* formatInp(string inp) {
     return obj;
 }
 
+void combine(vector<Team*> &teams, vector<Player*> &tmp, int n, int left, int k){
+
+}
+
+vector<Team*> makeCombinations(int n, int k){
+    vector<Team*> teams;
+    vector<Player*> tmp;
+    combine(teams, tmp, n, 1, k);
+    return teams;
+}
+
 
 
 
@@ -81,6 +92,6 @@ int main()
         }
     }
     for(int i=0;i<inp.size();i++){
-        cout<<inp[i]->name<<"";
+        cout<<inp[i]->name<<endl;
     }
 }
